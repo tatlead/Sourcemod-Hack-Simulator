@@ -1,2 +1,2 @@
-# -Sourcemod-Hack-Simulator
+# Sourcemod-Hack-Simulator
 A Hacking Simulator by using sourcemod
