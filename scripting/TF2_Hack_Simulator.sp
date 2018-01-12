@@ -29,7 +29,7 @@
 #define DEBUG
 
 #define PLUGIN_AUTHOR "Battlefield Duck"
-#define PLUGIN_VERSION "1.0"
+#define PLUGIN_VERSION "1.1"
 
 #include <sourcemod>
 #include <sdktools> 
@@ -97,9 +97,41 @@ public void OnPluginStart()
 	RegAdminCmd("sm_hm", Command_HackMenu, ADMFLAG_ROOT, "Open hack menu");
 	RegAdminCmd("sm_hackmenu", Command_HackMenu, ADMFLAG_ROOT, "Open hack menu");
 	
+	RegAdminCmd("sm_hm_resetall", Command_HackMenuResetAll, ADMFLAG_ROOT, "ResetAll");
+	
 	//Sync Hud
 	g_hHud = CreateHudSynchronizer();
 }
+
+public Action Command_HackMenuResetAll(int client, int args)
+{
+	for (int i = 1; i < MAXPLAYERS; i++)
+	{
+		g_bHopping[i] = false;
+		g_bDuckJump[i] = false;
+		g_bChatSpammer[i] = false;
+		g_bVoiceSpammer[i] = false;
+		g_bAutoReflecting[i] = false;
+		g_bThirdperson[i] = false;
+		g_bPlayers[i] = false;
+		g_bLaser[i] = false;
+		g_bAutoAiming[i] = false;
+		g_bAirstuckMode[i] = false;
+		g_bPlayerInfo[i] = false;
+		g_bAimFoV[i] = false;
+		g_bAutoShoot[i] = false;
+		g_bAutoZoom[i] = false;
+		g_bMeleeAimbot[i] = false;
+		g_iPlayerDesiredFOV[i] = 90;
+		g_bEnemyOnly[i] = false;
+		g_bCritHack[i] = false;
+		g_bNoHands[i] = false;
+		g_bNoScope[i] = false;
+		g_bNoZoom[i] = false;
+	}
+	return Plugin_Continue;
+}
+
 
 public void OnMapStart()
 {
@@ -832,6 +864,12 @@ public void OnClientPutInServer(int client)
 	g_bAutoZoom[client] = false;
 	g_bMeleeAimbot[client] = false;
 	g_iPlayerDesiredFOV[client] = 90;
+	g_bEnemyOnly[client] = false;
+	g_bCritHack[client] = false;
+	g_bNoHands[client] = false;
+	g_bNoScope[client] = false;
+	g_bNoZoom[client] = false;
+	
 	if (!IsFakeClient(client))
 		QueryClientConVar(client, "fov_desired", OnClientGetDesiredFOV);
 }
@@ -854,6 +892,11 @@ public void OnClientDisconnect(int client)
 	g_bAutoZoom[client] = false;
 	g_bMeleeAimbot[client] = false;
 	g_iPlayerDesiredFOV[client] = 90;
+	g_bEnemyOnly[client] = false;
+	g_bCritHack[client] = false;
+	g_bNoHands[client] = false;
+	g_bNoScope[client] = false;
+	g_bNoZoom[client] = false;
 }
 
 public Action OnPlayerSpawn(Handle event, const char[] name, bool dontBroadcast) //Hookevent
